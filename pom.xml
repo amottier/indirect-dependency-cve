@@ -11,25 +11,63 @@
     <groupId>org.example</groupId>
     <artifactId>indirect-dependency-cve</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
     <packaging>jar</packaging>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.7.RELEASE</version>
-        <relativePath/>
-        <!--  lookup parent from repository  -->
-    </parent>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>2.2.7.RELEASE</version>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty</artifactId>
+            <version>1.36.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-tcnative</artifactId>
+            <version>2.0.44.Final</version>
+            <classifier>linux-x86_64</classifier>
         </dependency>
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>eu.fasten</groupId>
+                <artifactId>fasten-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Fail the build if any problem is found in one of the dependencies -->
+                            <failOnRisk>true</failOnRisk>
+
+                            <risks>
+                                <risk>
+                                    <!-- Enable security vulnerabilities based risk analysis -->
+                                    <type>fasten.security</type>
+                                </risk>
+                            </risks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
 

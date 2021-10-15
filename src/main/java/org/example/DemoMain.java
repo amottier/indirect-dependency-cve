@@ -1,14 +1,15 @@
 package org.example;
 
 import io.grpc.netty.GrpcSslContexts;
-import io.netty.handler.codec.http.multipart.AbstractDiskHttpData;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
+
+import java.io.File;
 
 public class DemoMain {
     public static void main(String[] args) {
         GrpcSslContexts.configure(SslContextBuilder.forClient(), SslProvider.OPENSSL);
-        AbstractDiskHttpData
+        GrpcSslContexts.forServer(new File(""), new File(""));
         /*
         Call trace:
         GrpcSslContexts.configure grcp-netty
